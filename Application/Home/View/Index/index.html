@@ -1,0 +1,128 @@
+<link rel="stylesheet" type="text/css" href="__CSS__/index.css">
+<link rel="stylesheet" href="__STATIC__/jquery-ui.css">
+<script type="text/javascript" src="__JS__/index.js"></script>
+<script src="__STATIC__/jquery-ui.js"></script>
+
+	<div class="form-bar">
+		<form id="sign-form" action="{:U('Index/sign_handle')}" accept-charset="utf-8">
+			<div class="ui-widget">
+				<label for="name">姓名:</label>
+				<input id="name-sign" class="form-control" type="text" name="name" value="" placeholder="请输入姓名">
+			</div>
+	
+		</form>
+	</div>
+	<div class="panel">
+		<div class="button-panel">
+			<button id="signIn" type="button" onclick="signSend(0)">签到</button>
+			<button id="signOut" type="button" onclick="signSend(1)">签退</button>
+			<button id="offset-button" type="button">补签</button>
+			<button id="query-button" type="button"><span>查询</span>
+				<div id="query-div">
+					<div class="arrow"></div>
+					<a href="{:U('Search/index')}">考勤</a>
+					<a href="{:U('Course/index')}">课表</a>
+				</div>
+			</button>
+			<a class="collect-a" href="{:U('Collect/index')}">统计</a>
+		</div>
+		<div class="banner-panel">
+			<div class="banner"></div>
+			<div id="offset-box">
+				<form id="offset-form" action="{:U('Index/offset_handle')}" accept-charset="utf-8">
+					<input id="have-in" type="hidden" name="have_in">
+					<div>
+						<label for="name">姓名</label>
+						<input id="name-offset" type="text" name="name" disabled="disabled" value="">
+					</div>
+					<div class="offset-date">
+						<label for="time">时间</label>
+						<input type="number" id="year" name="year">
+						<label>年</label>
+						<input type="number" id="month" name="month" max="12" min="1">
+						<label>月</label>
+						<input type="number" id="day" name="day" max="31" min="1">
+						<label>日</label>
+					</div>
+					<div class="offset-time">
+						<input type="number" id="in-hour" name="in_hour" max="23" min="0">
+						<label>时</label>
+						<input type="number" id="in-minute" name="on_minute" max="59" min="0">
+						<label>分</label>
+						<label>---</label>
+						<input type="number" id="out-hour" name="out_hour" max="23" min="0">
+						<label>时</label>
+						<input type="number" id="out-minute" name="out_minute" max="59" min="0">
+						<label>分</label>
+					</div>
+					<div class="offset-form-button">
+						<button id="offset-send" type="button" data-have-in="" onclick="offsetSend()">提交</button>
+						<button id="offset-cancel" type="button">取消</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="info-block">
+		<h4><?php  echo date('Y-m-d',time()); ?>签到信息:</h4>
+		<div id="show-block">
+			<?php
+				for($i = count($log_info) - 1; $i >= 0; $i --){
+					echo "<p>".$log_info[$i]["name"]."同学 ".date("H:i",$log_info[$i]["time"]).($log_info[$i]["type"] ? " 离开" : " 来到")."小组</p>";
+				}
+			?>
+			<!-- <volist name="log_info" id="vo">
+				<p>{$vo.name}同学{$vo.time|date="H:i",###} <empty name ="vo.type" >来到 <else /> 离开 </empty> 小组</p>
+			</volist> -->
+		</div>
+	</div>
+	<input type="hidden" id="had-sign-in" value="{:U('Index/had_sign_in')}">
+<script type="text/javascript">
+// var myDate=new Date();
+// function sendStart(type){
+// 	var xmlhttp;
+// 	var id = document.getElementById("name").value;
+
+// 	if (window.XMLHttpRequest) {
+// 		xmlhttp = new XMLHttpRequest();
+// 	} else {
+// 		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+// 	}
+	
+// 	var url  = document.getElementById("form").getAttribute("action");
+	
+// 	xmlhttp.open("POST",url,true);
+// 	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+// 	xmlhttp.onreadystatechange=function()
+// 	{
+// 	  if (xmlhttp.readyState==4 && xmlhttp.status==200){
+// 	  	if(xmlhttp.responseText == 'success'){
+// 	   	 var block = document.getElementById("show-block");
+// 	   	 var p = document.createElement("p");
+// 	   	 p.innerHTML = id + "同学" + myDate.getHours() + ":" + myDate.getMinutes() + (type == 0 ? "来到小组" : "离开小组");
+// 	   	 block.appendChild(p);
+// 	   	}
+// 	  }
+// 	} 
+//  	xmlhttp.send("id="+ id + "&type=" + type);
+//  }
+ 	// console.log(url);
+</script>
+
+
+
+<script>
+$(function() {
+  var availableTags = [
+  <?php 
+  	foreach ($user_info as $key => $value) {
+  		echo "'".$value['name']."',";
+  	}
+  ?>
+  ];
+  $( "#name-sign" ).autocomplete({
+    source: availableTags
+  });
+});
+</script>

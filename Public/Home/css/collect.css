@@ -1,0 +1,10 @@
+h1{
+	text-align: center;
+}
+td,th{
+	height: 30px
+}
+.back-link{
+	float: right;
+	margin-top: 20px
+}

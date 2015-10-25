@@ -1,0 +1,64 @@
+h3{
+	float: left;
+	width: auto;
+	margin: 0
+}
+.back{
+	float: right;
+	margin-top: 5px;
+	margin-right: 10px
+}
+.tool-bar{
+	margin:10px 0 20px 0;
+}
+.tool-bar::after{
+	display: table;
+	content: " ";
+	clear: both;
+}
+.course-td{
+	height:80px;
+}
+#week-table{
+	width: 225px;
+	margin: 20px 10px ;
+	float: left;
+	border-radius: 5px;  
+}
+/*.week-table td:first,.week-table tr:first{
+	border-top-left-radius: 5px;  
+}*/
+/*.week-table td:last,.week-table tr:last{
+	border-top-left-radius: 5px;  
+}*/
+.week-td{
+	height: 35px;
+	width: 40px;
+	padding: 0;
+	
+	border-color: #ccc;
+}
+.chosed-week{
+	background: rgba(250,206,13,.5);
+}
+.form-group::after{
+	content: " ";
+	clear: both;
+	display: table;
+}
+.have-course{
+	background: #60C0E6;
+	border-color: #ddd;
+}
+.no-this-week{
+	background: rgba(200,200,200,.5);
+}
+select{
+	font-size: 18px;
+	border-radius: 3px;
+	box-shadow: none;
+	border:1px #ccc solid;
+}
+option{
+	font-size: 14px;
+}

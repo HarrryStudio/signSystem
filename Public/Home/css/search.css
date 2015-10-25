@@ -1,0 +1,184 @@
+#center{
+	position: relative;
+}
+.search-left{
+	float: left;
+}
+.search-right{
+	float: right;
+}
+.bark{
+	
+}
+.input-group{
+	width: 300px;
+	float: left;
+}
+.input-group .form-control:last-child{
+	border-radius: 0;
+}
+.btn-group{
+	float: left;
+}
+.btn-group > .btn:first-child{
+	border-radius: 0;
+}
+
+.btn-group button.action,.btn-group .btn-default:focus,.btn-group .btn-default.focus{
+	background-color: #337ab7;
+	color:#fff;
+}
+#search-start{
+	display: block;
+	float: left;
+	border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left:none;
+    top: 0
+}
+.gather-bar{
+	margin: 10px 0;
+}
+.gather-title{
+	font-size: 16px;
+	font-weight: bold;
+}
+.gather-item{
+	float: left;
+	margin-left: 15px;
+	font-size: 16px;
+}
+
+
+
+.now-in-table td{
+	height: 40px;
+}
+.now-in-table th{
+	height: 20px;
+}
+.now-team-col{
+	width: 120px
+}
+.week-table td{
+	height: 50px;
+	width: 13%;
+}
+.week-table .null-td,.week-table .time-td{
+	width: 8%;
+}
+.week-table .data-th{
+	width: 13%;
+}
+.week-table-body tr:first-child td{
+	border-top:none;
+}
+.week-table-head{
+	background-color: #fff;
+	z-index: 10
+}
+.week-table-body-box{
+	position: relative;
+	overflow: hidden;
+	/*height: 330px;
+	
+	overflow-y:auto;*/
+}
+.day-td{
+	width: 90% !important;
+}
+/*.week-table-body-box::-webkit-scrollbar{
+	width: 5px;
+	height: 5px;
+}
+.week-table-body-box::-webkit-scrollbar-button{
+	display: none;
+}
+.week-table-body-box::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
+}
+.week-table-body-box::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.2);
+}*/
+.week-days-tr th{
+	height: 20px;
+	font-size: 12px	
+}
+.week-dates-tr th{
+	height: 40px;
+	font-size: 14px	
+}
+/*.week-table tr td:first-child,.week-table tr th:first-child{
+	width: 30px;
+}*/
+.thatday-th div,.today-th div{
+	height: 30px;
+	width: 30px;
+	line-height: 30px;
+	border-radius: 15px;
+	color:#fff;
+	margin: auto
+}
+.thatday-th div{
+	background: #33B7A9
+}
+.today-th div{
+	background: #9533B7
+}
+.week-item-tr th{
+	font-size: 12px;
+	font-weight: normal;
+}
+.change-time-arrow{
+	float: left;
+	line-height: 23px;
+	cursor: pointer;
+}
+.show-time-bar h3{
+	float: left;
+	margin: 0 20px;
+	width: auto;
+}
+.show-time-bar{
+	line-height: 26px;
+	margin: 20px 0 10px 0
+}
+
+.time-fragment{
+	position: absolute;
+	border:1px solid #fff;
+	opacity: 0.8;
+	cursor: pointer;
+}
+.table-bar{
+	position: relative;
+}
+.time-arrow{
+	width: 0px;
+	height: 0px;
+	position: absolute;
+	left:0;
+	top:0;
+	border:none;
+	border-top:10px transparent solid;
+	border-bottom:10px transparent solid;
+	border-left:10px red solid;
+}
+#in-arrow span{
+	margin-top: -15px 
+}
+#out-arrow span{
+	margin-top: 0px
+}
+.time-arrow span{
+	display: block;
+	white-space: nowrap;
+	font-size: 12px;
+	margin-right: 10px; 
+	width: 45px;
+	background-color: #fff;
+}

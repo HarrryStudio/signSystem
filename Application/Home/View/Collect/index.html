@@ -1,0 +1,35 @@
+<link rel="stylesheet" type="text/css" href="__CSS__/collect.css">
+<script type="text/javascript" src="__JS__/collect.js"></script>
+<div class="title">
+	<h1>三月小组第{$week_date}周考勤统计</h1>
+	<a class="excel" href="to_excel">导出</a>
+</div>
+<div>
+	<table>
+		<thead>
+			<tr>
+				<th>组名</th>
+				<th>成员</th>
+				<th>时长(分钟)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+				$flag = false;
+				foreach ($collect_data as $key => $team) {
+					echo "<tr><td rowspan = '".(count($team['member']) + 1)."'>".$team['name']."</td>";
+					$flag = false;
+					foreach ($team['member'] as $key => $member) {
+						if(true){
+							echo "<tr>";
+						}else{
+							$flag = true;
+						}
+					echo "<td>".$member['name']."</td><td>".ceil($member['length'] / 60)."</td></tr>";
+					}
+				}
+			?>
+		</tbody>
+	</table>
+	<a class="back-link" href="{:U('Index/index')}">返回</a>
+</div>

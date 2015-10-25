@@ -1,0 +1,49 @@
+h3{
+	float: left;
+	width: auto;
+	margin: 0
+}
+#course-edit{
+	float: right;
+}
+.back{
+	float: right;
+	margin-top: 5px;
+	margin-right: 10px
+}
+.course-td{
+	/*display: block;*/
+	/*height:80px;*/
+}
+#course-excel{
+	float: right;
+	margin-right: 10px
+}
+.tool-bar{
+	margin:10px 0 20px 0;
+}
+.tool-bar::after{
+	display: table;
+	content: " ";
+	clear: both;
+}
+#course-table{
+	min-height: 450px;
+}
+
+.week-td{
+	height: 35px;
+	width: 40px;
+	padding: 0;
+	
+	border-color: #ccc;
+}
+select{
+	font-size: 18px;
+	border-radius: 3px;
+	box-shadow: none;
+	border:1px #ccc solid;
+}
+option{
+	font-size: 14px;
+}

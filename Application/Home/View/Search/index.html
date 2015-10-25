@@ -1,0 +1,267 @@
+<link rel="stylesheet" type="text/css" href="__CSS__/search.css">
+<link rel="stylesheet" type="text/css" href="__STATIC__/jquery-ui.css">
+<script type="text/javascript" src="__JS__/search.js"></script>
+<script type="text/javascript" src="__STATIC__/jquery-ui.js"></script>
+<div class="search-bar">
+	<div class="search-right">
+		<a href="{:U('Index/index')}">返回</a>
+		<button href="__ACTION__" class="btn btn-success">在线人数</button>
+	</div>
+	<div class="search-left">
+		<div class="input-group">
+	      <div class="input-group-btn">
+	        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	        	<span class="dropdown-title">组名</span> <span class="caret"></span>
+	        </button>
+	        <ul class="dropdown-menu">
+	          <li><a class="dropdown-item" value="1">组名</a></li>
+	          <li><a class="dropdown-item" value="2">人名</a></li>
+	        </ul>
+	        <input type="hidden" name="search_type" class ="dropdown-value" id="search-type-input" value="<?php echo $search_type == 0? 1 :  $search_type; ?>">
+	      </div><!-- /btn-group -->
+	      <input type="text" class="form-control" name="title" id="search-title-input" aria-label="..." value="{:I('title')}">
+	    </div><!-- /input-group -->
+		<div class="btn-group" role="group" aria-label="...">
+		  <button type="button" class="btn btn-default" value="2">月</button>
+		  <button type="button" class="btn btn-default" value="1">周</button>
+		  <button type="button" class="btn btn-default" value="0">日</button>
+		  <input type="hidden" id="search-date-type-input" name="search_date_type" class="btn-group-value"  value="{$search_date_type}">
+		</div>
+		<button url="__ACTION__" id="search-start" class="btn btn-default glyphicon glyphicon-search"></button>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="show-time-bar" time="{$search_time}">
+	
+	
+	<if condition="$search_type eq 0">
+	<?php echo "<h3>".date("Y年n月j日 G时i分",time())." 在线人数 : ".$result['count']."</h3>"; ?>
+	<else />
+		<div id="prev-time" class="change-time-arrow glyphicon glyphicon-arrow-left" onclick="change_time(0)"></div>
+		<if condition="$search_date_type eq 0">
+		<?php echo "<h3>".date("Y年n月j日",$search_time)."</h3>"; ?>
+		</if><if condition="$search_date_type eq 1">
+		<?php echo "<h3>".date("Y年n月 ",$search_time); ?>第<?php echo date("W",$search_time + 24 * 3600); ?>周</h3>
+		</if><if condition="$search_date_type eq 2">
+		<?php echo "<h3>".date("Y年n月",$search_time)."</h3>"; ?>
+		</if>
+		<div id="next-time" class="change-time-arrow glyphicon glyphicon-arrow-right"  onclick="change_time(1)"></div>
+	</if>
+	<div class="clear"></div>
+</div>
+
+<if condition="$search_type eq 0">
+
+<table class="now-in-table">
+		<thead>
+			<tr> 
+				<th class="now-team-col">组</th><th>姓名</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+				foreach ($result['data'] as $key => $value) {
+					echo "<tr><td>".$key."</td><td>";
+					echo $value[0];
+					for($i=1 ; $i < count($value); $i ++ ) {
+						echo " , ".$value[$i];
+					}
+					echo "</td></tr>";
+				}
+			?>
+		</tbody>
+
+</table>
+<else />
+<div class="gather-bar">
+	<div class="gather-title">汇总</div>
+	<?php
+		foreach ($gather as $key => $value) {
+			echo "<div class='gather-item' data-id='".$value['id']."'><span class='gather-name'>".$value['name']."</span> 共 ". ceil($value['length'] / 60) . "分钟;</div>";
+		}
+	?>
+	<div class="clear"></div>
+</div>
+<if condition="$search_date_type lt 2">
+	<div class="table-bar">
+	<div class="week-table-head-box">
+	<!-- 周表 -->
+		<table class="week-table week-table-head">
+			<thead>
+				<tr class="week-days-tr"> 
+					<th class="null-td"></th>
+					<volist name="week_days" id="vo">
+						<th class="data-td">{$vo}</th>
+					</volist>
+				</tr>
+				<tr class="week-dates-tr"> 
+				<th class="null-td"></th>
+					<?php 
+						foreach ($week_date as $key => $value) {
+							if($key === $today){
+								echo '<th class="data-th today-th"><div>'.$value.'</div></th>';
+							}elseif($key === $thatday){
+								echo '<th class="data-th thatday-th"><div>'.$value.'</div></th>';
+							}else{
+								echo '<th class="data-th"><div>'.$value.'</div></th>';
+							}
+						}
+					?>
+				</tr>
+				<?php  if($search_date_type == 1){ ?>
+				<tr class="week-item-tr">
+				<th></th>
+				
+				<?php 
+					$name = " ";
+					for($i = 0 ; $i < 7; $i ++) {
+						echo "<th>";
+						foreach ($gather as $key => $value) {
+
+							if($search_type == 1){
+
+								$name = $value['name'] . " : ";
+							}
+							echo "<div>$name".(int)($value['item'][$i] / 60)."分钟</div>";
+						}
+						echo "</th>";
+					}
+				?>
+				</tr>
+				<?php }?>
+			</thead>
+		</table>
+	</div>
+	<div class="week-table-body-box">
+		<div id="in-arrow" class="time-arrow"><span></span></div>
+		<div id="out-arrow" class="time-arrow"><span></span></div>
+		<script type="text/javascript">
+			time_fragment_data = [{x:1}
+				<?php
+					foreach ($result as $key => $value) {
+						echo ",{col:".$value['col']."}";
+					}
+				?>
+			];
+		</script>
+		<volist name='result' id="vo">
+			<div class="time-fragment" <empty name="search_date_type"> data-col="0" <else />data-col="{$vo.col}" </empty>data-belong="{$vo.user_id}" data-in-time="{$vo.in_time}" data-length="{$vo.length}"></div>
+		</volist>
+		<table class="week-table week-table-body">
+			<tbody>
+				<?php
+					$time = 7;
+					while($time < 24){
+						echo "<tr><td class='time-td'>".$time++."</td>";
+					if($search_date_type == 0){
+						echo "<td class='data-td day-td' colspan = '7'></td>";
+					}else{
+						for($i = 0; $i < 7; $i++){
+							echo "<td class='data-td'></td>";
+						}
+					}
+					echo "</tr>";}
+					
+				?>
+			</tbody>
+		</table>
+	</div>
+<else />
+	<table >
+		<thead>
+			<tr class="week-days-tr"> 
+				<volist name="week_days" id="vo">
+					<th>{$vo}</th>
+				</volist>
+				<th>合计</th>
+			</tr>
+		</thead>
+		<!-- 月表 -->
+		<tbody class="month-table-body">
+			<?php
+				$k = 1;
+				$name = " ";
+				for($i = 0; $i < count($result);){
+					echo "<tr>";
+					for($j = 0; $j < 7; $j ++,$i ++){
+						if($result[$i] < 0){
+							echo "<td class='pad'></td>";
+						}else{
+							echo "<td><div>".$k++."</div>";
+							if(is_array($result[$i])){
+								foreach ($result[$i] as $key => $value) {
+									echo "<div>".$value['name'].':'.ceil($value['length'] / 60)."</div>";
+								}
+							}else{
+								echo "<div>".ceil($result[$i] / 60)."</div>";
+							}
+							echo "</td>";
+						}
+					}
+					echo "<td>";
+					foreach ($gather as $key => $value) {
+						if($search_type == 1){
+
+							$name = $value['name'] . " : ";
+						}
+						echo "<div>".$name.ceil($value['item'][(int)(($i-1) / 7)]/ 60)."</div>";
+					}
+					echo "</td>";
+					echo "</tr>";
+				}
+			?>
+		</tbody>
+	</table>
+</if>
+</if>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		var availableTags = [
+			"开发1组",
+			"开发2组",
+			"开发3组",
+			"开发4组",
+			"开发5组",
+			"开发6组",
+			"开发7组",
+			"美工组",
+			"网络组",
+		];
+
+		$( "#search-title-input" ).autocomplete({
+		  source: availableTags
+		});
+	})
+	$(".dropdown-menu").click(function () {
+		if ($(".dropdown-title").text() == "人名") {
+			availableTags = [
+				  <?php 
+				  	foreach ($user_info as $key => $value) {
+				  		echo "'".$value['name']."',";
+				  	}
+				  ?>
+			];
+		} else {
+			availableTags = [
+				"开发1组",
+				"开发2组",
+				"开发3组",
+				"开发4组",
+				"开发5组",
+				"开发6组",
+				"开发7组",
+				"美工组",
+				"网络组",
+			];
+		}
+		$( "#search-title-input" ).autocomplete({
+		  source: availableTags
+		});
+	})
+
+
+	//console.log(time_fragment_data);
+</script>
+
