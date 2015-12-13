@@ -11,4 +11,6 @@ return array(
 	"MAX_CONTINUE_HOUR" => 6,
 	"START_TIME" => "2015-9-1",
 	"TOTAL_WEEKS" => 19,
+	"PERSON_RATIO" => 0.66,
+	"SCHEDULE" => array("8:00","10:00","14:30","16:40","19:30"),
 );

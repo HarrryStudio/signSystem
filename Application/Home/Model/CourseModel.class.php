@@ -4,10 +4,16 @@ use Think\Model;
 
 class CourseModel extends BaseModel{
 
-	protected $tableName = 'course'; 
-
-
-	public function get_all_info($this_week,$team){
+	protected $tableName = 'course';
+    /**
+     * 得到课表信息
+     * @param  int $this_week 周数
+     * @param  int $team      组id
+     * @param  int $dif       0 为 有课表   1为无课表
+     * @param  int $is_dis    是否分 "全部 , 除"   0: 为否  1: 为是
+     * @return array          课表信息
+     */
+	public function get_all_info($this_week,$team,$dif,$is_dis = 1){
 		$where['user_info.status'] = 0;
 		$where['course.status'] = 0;
 		if($team > 0){
@@ -19,22 +25,61 @@ class CourseModel extends BaseModel{
 				->where($where)
 				->select();
 				// echo $this->getLastSql();
-		$data = array();
-		$data = array_pad($data , 20 ,array());
+		$have_data = array();
+		$have_data = array_pad($have_data , 35 ,array());
+        $dif_data = array();
+        $dif_data = array_pad($dif_data , 35 ,array());
 		$temp = array();
 		foreach ($result as $key1 => $user) {
 			$temp = json_decode($user['data'],true);
-			foreach ($temp as $key2 => $value) {
-				if(is_array($value)){
-					if( in_array($this_week-1, $value['weeks']) ){
-						$data[$value['index']][] = $user['name'];
-					}
-				}
+            for($i = 0; $i < 35; $i ++){
+				if(is_array($temp[$i])){
+                    if( in_array($this_week-1, $temp[$i]['weeks']) ){
+                        $have_data[$temp[$i]['index']][] = $user['name'];
+                    }else{
+                        $dif_data[$temp[$i]['index']][] = $user['name'];
+                    }
+				}else{
+                    $dif_data[$i][] = $user['name'];
+                }
 			}
 		}
+        if(!$is_dis){
+            return $dif ? $dif_data : $have_data ;
+        }
+        $count = count($result);
+        $data = array();
+        if($count > 0){
+            if($dif){
+                for($i = 0; $i < 35; $i ++){
+                    if(count($dif_data[$i]) == $count){
+                        $data[$i] = 0;
+                        continue;
+                    }
+                    if(count($dif_data[$i]) <= ceil($count * C('PERSON_RATIO'))){
+                        $data[$i] = array(1, $dif_data[$i]);
+                    }else{
+                        $data[$i] = array(-1, $have_data[$i]);
+                    }
+                }
+            }else{
+                for($i = 0; $i < 35; $i ++){
+                    if(count($have_data[$i]) == $count){
+                        $data[$i] = 0;
+                        continue;
+                    }
+                    if(count($have_data[$i]) <= ceil($count * C('PERSON_RATIO'))){
+                        $data[$i] = array(1, $have_data[$i]);
+                    }else{
+                        $data[$i] = array(-1, $dif_data[$i]);
+                    }
+                }
+            }
+        }
+        //var_dump($data);
 		return $data;
 	}
-	
+
 	public function get_one_info($user_id){
 		$where['user_id'] = $user_id;
 		$where['status'] = 0;
@@ -66,16 +111,16 @@ class CourseModel extends BaseModel{
 		$data = json_encode($data);
 		$r_data['update_time'] = time();
     	$r_data['data'] = $data;
-    	
+
 
     	$course_info = $this
     				->field('id,data')
     				->where(array('user_id' => $user_id,'status' => 0))
     				->find();
-    
+
     	if(empty($course_info)){
     		$r_data['create_time'] = time();
-    		$r_data['user_id'] = $user_id ; 
+    		$r_data['user_id'] = $user_id ;
     		if( $this->create($r_data) && $this->add()){
     			return true;
     		}
@@ -90,7 +135,13 @@ class CourseModel extends BaseModel{
     		}
     	}
 		return false;
-	}	
+	}
+
+	public function get_this_week(){
+		$start_time = strtotime( C('START_TIME') );
+		$num = (int)((time() - $start_time) / (3600 * 24 * 7));
+		return $num;
+	}
 
 	public function do_copy(){
 		$source_user = session('user_id');
@@ -123,7 +174,7 @@ class CourseModel extends BaseModel{
     	$data['update_time'] = time();
     	if(empty($target)){
 			$data['create_time'] = $data['update_time'];
-    		$data['user_id'] = $target_user ; 
+    		$data['user_id'] = $target_user ;
     		if( $this->create($data) && $this->add()){
     			return true;
     		}
@@ -135,5 +186,54 @@ class CourseModel extends BaseModel{
     	}
     	return false;
 
+	}
+
+	public function get_should_be(){
+		$section = $this->get_this_course();
+		if($section == -1){
+			return;
+		}
+		$week = $this->get_this_week();
+		$data = $this->alias('a')
+				->field("a.data,t.name as t_name,u.name as u_name")
+				->join("user_info as u on a.user_id = u.id")
+				->join("team_info as t on u.team = t.id")
+				->where(array("u.status" => 0))
+				->select();
+		$count = 0;
+		$result = array();
+		foreach($data as $key => $value){
+			if(!isset($result[$value['t_name']])){
+				$result[$value['t_name']] = array();
+			}
+			$item = json_decode( $value['data'] , true);
+			$course = $item[$section];
+
+			if(is_array($course)){
+
+				for ($i = 0; $i < count($course['weeks']); $i++) {
+					if($course['weeks'][$i] == $week){
+						$result[$value['t_name']][] = $value['u_name'];
+						$count ++;
+					}
+				}
+			}else{
+				$result[$value['t_name']][] = $value['u_name'];
+				$count ++;
+			}
+		}
+		return array('data' => $result, 'count' => $count);
+	}
+
+	public function get_this_course(){
+		$schedule = C("SCHEDULE");
+		$time = time();
+		$col = (int)date("w", $time+1);
+		for ($i = count($schedule) - 1; $i >= 0 ; $i--) {
+			if( strtotime($schedule[$i]) <  $time){
+				return $i + $col * 5;
+			}
+		}
+		return -1;
 	}
 }

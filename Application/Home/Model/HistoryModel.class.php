@@ -5,9 +5,9 @@ use Think\Model;
 /**
 * 签到日志模型
 */
-class HistoryModel extends BaseModel{	
+class HistoryModel extends BaseModel{
 
-	protected $tableName = 'history_log'; 
+	protected $tableName = 'history_log';
 
 	/**
 	 * 根据姓名或账户得到用户信息
@@ -31,7 +31,7 @@ class HistoryModel extends BaseModel{
 	public function get_team_info($name){
 		$where['name'] = $name;
 		$team_info = M()->table('team_info')->field("id,name")->where($where)->find();
-		return $team_info; 
+		return $team_info;
 	}
 
 	public function get_one_day_log($user_name,$time){
@@ -107,7 +107,7 @@ class HistoryModel extends BaseModel{
 		}
 		$week_start = $time - (int)date("w", $time) * 24 * 3600;
 		$month_end = (int)date("t", $time);
-		$result =  $this->alias("a") 
+		$result =  $this->alias("a")
 				->field('user_id,in_time,out_time')
 				->where(array(
 					'user_id' => $user_info['id'],
@@ -153,7 +153,7 @@ class HistoryModel extends BaseModel{
 		foreach ($users_info as $key => $value) {
 			array_push($gather, array('name'=>$value['name'], 'id'=>$value['id'], 'length'=>0));
 		}
-		
+
 		$index = (int)date("w", $time+1);
 		$length = 0;
 		foreach ($result as $key => $value) {
@@ -228,7 +228,7 @@ class HistoryModel extends BaseModel{
 		}
 		$week_start = $time - (int)date("w", $time) * 24 * 3600;
 		$month_end = (int)date("t", $time);
-		$result =  $this->alias("a") 
+		$result =  $this->alias("a")
 				->field('a.user_id,b.name as name,in_time,out_time')
 				->join('user_info as b on a.user_id = b.id')
 				->join('team_info as c on b.team = c.id')
@@ -270,7 +270,7 @@ class HistoryModel extends BaseModel{
 				  ->field('b.name,c.name as team')
 				  ->join('user_info as b on a.user_id = b.id')
 				  ->join('team_info as c on b.team = c.id')
-				  ->where(array('a.status' => 0))
+				  ->where(array('a.status' => 0, 'b.status' => 0))
 				  ->order('c.id,a.id')->select();
 		$count = count($result);
 		$data = array();
@@ -287,7 +287,7 @@ class HistoryModel extends BaseModel{
 		$t = strtotime('today');
 		$w = date('w');
 		$time = $t - $w * 24 * 3600;
-		$result =  $this->alias("a") 
+		$result =  $this->alias("a")
 				->field('b.id as user_id,b.name as user_name,c.id as team_id,c.name as team_name,SUM(out_time)-SUM(in_time) as length')
 				->join('right join user_info as b on a.user_id = b.id and (in_time > '.$time.' and in_time < '.(7 * 24 * 3600 + $time).')')
 				->join('team_info as c on b.team = c.id')

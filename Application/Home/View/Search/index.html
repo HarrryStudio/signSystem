@@ -32,10 +32,10 @@
 	<div class="clear"></div>
 </div>
 <div class="show-time-bar" time="{$search_time}">
-	
-	
+
+
 	<if condition="$search_type eq 0">
-	<?php echo "<h3>".date("Y年n月j日 G时i分",time())." 在线人数 : ".$result['count']."</h3>"; ?>
+	<?php echo "<h3>".date("Y年n月j日 G时i分",time())." 在线人数 : ".$result['now_count']."缺席人数 : ".$result['absent_count']."</h3>"; ?>
 	<else />
 		<div id="prev-time" class="change-time-arrow glyphicon glyphicon-arrow-left" onclick="change_time(0)"></div>
 		<if condition="$search_date_type eq 0">
@@ -54,18 +54,24 @@
 
 <table class="now-in-table">
 		<thead>
-			<tr> 
-				<th class="now-team-col">组</th><th>姓名</th>
+			<tr>
+				<th class="now-team-col">组</th><th>在线</th><th>缺席</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php
 				foreach ($result['data'] as $key => $value) {
 					echo "<tr><td>".$key."</td><td>";
-					echo $value[0];
-					for($i=1 ; $i < count($value); $i ++ ) {
-						echo " , ".$value[$i];
+					echo $value['now'][0];
+					for($i=1 ; $i < count($value['now']); $i ++ ) {
+						echo " , ".$value['now'][$i];
 					}
+					echo "</td><td class='absent'>";
+					echo $value['absent'][0];
+					for($i=1 ; $i < count($value['absent']); $i ++ ) {
+						echo " ," .$value['absent'][$i];
+					}
+
 					echo "</td></tr>";
 				}
 			?>
@@ -88,15 +94,15 @@
 	<!-- 周表 -->
 		<table class="week-table week-table-head">
 			<thead>
-				<tr class="week-days-tr"> 
+				<tr class="week-days-tr">
 					<th class="null-td"></th>
 					<volist name="week_days" id="vo">
 						<th class="data-td">{$vo}</th>
 					</volist>
 				</tr>
-				<tr class="week-dates-tr"> 
+				<tr class="week-dates-tr">
 				<th class="null-td"></th>
-					<?php 
+					<?php
 						foreach ($week_date as $key => $value) {
 							if($key === $today){
 								echo '<th class="data-th today-th"><div>'.$value.'</div></th>';
@@ -111,8 +117,8 @@
 				<?php  if($search_date_type == 1){ ?>
 				<tr class="week-item-tr">
 				<th></th>
-				
-				<?php 
+
+				<?php
 					$name = " ";
 					for($i = 0 ; $i < 7; $i ++) {
 						echo "<th>";
@@ -161,7 +167,7 @@
 						}
 					}
 					echo "</tr>";}
-					
+
 				?>
 			</tbody>
 		</table>
@@ -169,7 +175,7 @@
 <else />
 	<table >
 		<thead>
-			<tr class="week-days-tr"> 
+			<tr class="week-days-tr">
 				<volist name="week_days" id="vo">
 					<th>{$vo}</th>
 				</volist>
@@ -237,7 +243,7 @@
 	$(".dropdown-menu").click(function () {
 		if ($(".dropdown-title").text() == "人名") {
 			availableTags = [
-				  <?php 
+				  <?php
 				  	foreach ($user_info as $key => $value) {
 				  		echo "'".$value['name']."',";
 				  	}
@@ -264,4 +270,3 @@
 
 	//console.log(time_fragment_data);
 </script>
-

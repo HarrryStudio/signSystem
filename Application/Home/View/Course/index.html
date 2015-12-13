@@ -1,31 +1,38 @@
 <link rel="stylesheet" type="text/css" href="__CSS__/course.css">
 <script type="text/javascript" src="__JS__/course.js"></script>
 <div class="tool-bar">
-<h3>
-  工作室
-  <select id="choose-team-select">
-    <option value="0">全体</option>
-    <volist name="team_info" id="vo">
-      <option value="{$vo.id}">{$vo.name}</option>
-    </volist>
-  </select>
-  第 
-  <select id="choose-week-select">
-    <option value="0">本周</option>
-      <for start="1" end="26">
-        <option value="{$i}">{$i}</option>
-      </for>
-  </select> 周的有课表
-</h3>
-<script type="text/javascript">
-  window.this_week = "<?php echo $this_week;  ?>";
-  $('#choose-week-select option[value='+this_week+']')[0].selected = true;
-  window.team = "<?php echo $team;  ?>";
-  $('#choose-team-select option[value='+team+']')[0].selected = true;
-</script>
-<button class="btn btn-primary"  id="course-edit">编辑课表</button>
-<a href="__CONTROLLER__/to_excel" class="btn btn-success"  id="course-excel">导出</button>
-<a class="back" href="{:U('Index/index')}">返回</a>
+  <h3>
+    工作室
+    <select id="choose-team-select">
+      <option value="0">全体</option>
+      <volist name="team_info" id="vo">
+        <option value="{$vo.id}">{$vo.name}</option>
+      </volist>
+    </select>
+    第 
+    <select id="choose-week-select">
+      <option value="0">本周</option>
+        <for start="1" end="26">
+          <option value="{$i}">{$i}</option>
+        </for>
+    </select> 周的<empty name="dif">有<else/>无</empty>课表
+  </h3>
+  <script type="text/javascript">
+    window.this_week = "<?php echo $this_week;  ?>";
+    $('#choose-week-select option[value='+this_week+']')[0].selected = true;
+    window.team = "<?php echo $team;  ?>";
+    $('#choose-team-select option[value='+team+']')[0].selected = true;
+  </script>
+  <div class="button-bar">
+    <button class="btn btn-primary"  id="course-edit">编辑课表</button>
+    <a href="__CONTROLLER__/to_excel/dif/{:I('dif',0)}/team/{$team}" class="btn btn-success"  id="course-excel">导出</a>
+    <if condition="$dif eq 0">
+    <button class="btn btn-success turn-course"  id="course-dif" value="1">无课表</button>
+    <else />
+    <button class="btn btn-success turn-course"  id="course-nom" value="0">有课表</button>
+    </if>
+    <a class="back" href="{:U('Index/index')}">返回</a>
+  </div>
 </div>
 <table id="course-table">
 	<thead>
@@ -46,7 +53,16 @@
 				echo "<tr><td class='hour-td'>".($i+1)."</td>";
 				for($j = 0; $j < 7; $j ++){
 					echo "<td class='course-td'>";
-					foreach ($result[$index] as $key => $value) {
+         // var_dump($result[$index]);
+          if($result[$index] === 0){
+            echo "全部";
+            $index++;
+            continue;
+          }
+          if($result[$index][0] < 0){
+            echo "<b>除 : </b>";
+          }
+					foreach ($result[$index][1] as $key => $value) {
 						echo $value . ",";
 					}
 					echo "</td>";

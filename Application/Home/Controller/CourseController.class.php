@@ -5,12 +5,16 @@ class CourseController extends BaseController {
 
     public function index(){
     	$Course = D('course');
-    	$this_week = I('this_week',$this->get_this_week());
+        $this_week = I('this_week',$Course->get_this_week());
         $team = (int)I('team');
-    	$result = $Course->get_all_info($this_week,$team);
+        $dif = (int)I('dif',0);
+
+        $result = $Course->get_all_info($this_week,$team,$dif);
+
         $team_info = M()->table('team_info')->select();
     	$this->assign('this_week',$this_week);
         $this->assign('team',$team);
+        $this->assign('dif',$dif);
     	$this->assign('result',$result);
         $this->assign('team_info',$team_info);
     	$this->display();
@@ -58,11 +62,6 @@ class CourseController extends BaseController {
     	}
     }
 
-    public function get_this_week(){
-    	$start_time = strtotime( C('START_TIME') );
-    	$num = (int)((time() - $start_time) / (3600 * 24 * 7));
-    	return $num;
-    }
 
     public function do_copy(){
         $Course = D('course');
@@ -84,13 +83,13 @@ class CourseController extends BaseController {
         }else{
             $team_name = "全体成员";
         }
-        
-        $jury = $Course->get_all_info($this_week,$team);
+        $dif = (int)I('dif');
+        $jury = $Course->get_all_info($this_week,$team,$dif,0);
 
-        //var_dump($jury);return;
+        //var_dump(I('team'));return;
 
         $sheetTitle = "课表";
-        $file_name ="三月".$team_name."第".$this_week ."周课表";
+        $file_name ="三月".$team_name."第".$this_week ."周".($dif?"无":"有")."课表";
         // print_r($jury);
         // return ;
         //删除以前生成的
@@ -130,8 +129,8 @@ class CourseController extends BaseController {
         $objActSheet->setCellValue('G' . '1', "周五");
         $objPHPExcel->getActiveSheet()->getStyle('G' . '1')->getFont()->setBold(true);
         $objActSheet->setCellValue('H' . '1', "周六");
-        $objPHPExcel->getActiveSheet()->getStyle('H' . '1')->getFont()->setBold(true); 
-    
+        $objPHPExcel->getActiveSheet()->getStyle('H' . '1')->getFont()->setBold(true);
+
         $string = "";
         $index = 0;
         for($i = 0 ; $i < 5; $i ++){
@@ -146,7 +145,7 @@ class CourseController extends BaseController {
                 }else{
                     $string = substr($string,0,-1);
                 }
-                
+
                 $objActSheet->setCellValue($j . ($i + 2), $string);
                 $index++;
             }

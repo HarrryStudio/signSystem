@@ -12,9 +12,32 @@ class SearchController extends BaseController {
         $search_type = (int)I('get.search_type');
 
         if($search_type == 0){
-            $result['result'] = $History->get_in_people(time());
+            $now_in = $History->get_in_people(time());
+            $should_in = D('Course')->get_should_be();
+            $team_info = M('team_info')->field('name')->select();
+            $absent_count = 0;
+            foreach ($team_info  as $key => $value) {
+                $t_name = $value['name'];
+                $item_in = [];
+                $item_should = [];
+                if(isset($now_in['data'][$t_name])){
+                    $item_in = $now_in['data'][$t_name];
+                }
+                if(isset($should_in['data'][$t_name])){
+                    $item_should = $should_in['data'][$t_name];
+                }
+                for ($i = 0; $i < count($item_should); $i++) {
+                    if(!in_array($item_should[$i], $item_in)){
+                        $result['result']['data'][$t_name]['absent'][] = $item_should[$i];
+                        $absent_count ++;
+                    }
+                }
+                $result['result']['data'][$t_name]['now'] = $item_in;
+            }
+            $result['result']['absent_count'] = $absent_count;
+            $result['result']['now_count'] = $now_in['count'];
         }else{
-            
+
             $search_date_type = (int)I('get.search_date_type');
             $search_time = (int)I('get.search_time',"");
             $user_name = trim(I('get.title'));
@@ -95,7 +118,7 @@ class SearchController extends BaseController {
             //         $result['result'] = $this->get_month($search_time,$result['result']);
             //     }
             // }
-            
+
         }
         if( $result === false){
           $this->error($History->getError());
@@ -116,7 +139,7 @@ class SearchController extends BaseController {
     }
 
     public function get_week($search_time,$type){
-        
+
         $week_date = array();
         $thatday = (int)date("w", $search_time);
 
@@ -125,10 +148,10 @@ class SearchController extends BaseController {
             $today = (int)date("w", time());
             $this->assign('today',$today);
         }
-        
+
         $first_day = (int)date("j", $first_time);
         $month_end = (int)date("t", $first_time);
-        
+
         for($i = 0; $i < 7; $i ++){
             if( ($week_date[] = $first_day + $i) >= $month_end){
                 $first_day = - $i;

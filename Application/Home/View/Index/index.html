@@ -17,13 +17,17 @@
 			<button id="signIn" type="button" onclick="signSend(0)">签到</button>
 			<button id="signOut" type="button" onclick="signSend(1)">签退</button>
 			<button id="offset-button" type="button">补签</button>
-			<button id="query-button" type="button"><span>查询</span>
+			<div id="query-box">
+				<button id="query-button" type="button"><span>查询</span></button>
 				<div id="query-div">
 					<div class="arrow"></div>
 					<a href="{:U('Search/index')}">考勤</a>
 					<a href="{:U('Course/index')}">课表</a>
 				</div>
-			</button>
+			</div>
+			
+				
+			
 			<a class="collect-a" href="{:U('Collect/index')}">统计</a>
 		</div>
 		<div class="banner-panel">
