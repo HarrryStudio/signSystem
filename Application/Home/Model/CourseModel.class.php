@@ -208,15 +208,17 @@ class CourseModel extends BaseModel{
 			}
 			$item = json_decode( $value['data'] , true);
 			$course = $item[$section];
-
 			if(is_array($course)){
-
+                $flag = true;
 				for ($i = 0; $i < count($course['weeks']); $i++) {
 					if($course['weeks'][$i] == $week){
-						$result[$value['t_name']][] = $value['u_name'];
-						$count ++;
+						$flag = false;
 					}
 				}
+                if($flag){
+                    $result[$value['t_name']][] = $value['u_name'];
+                    $count ++;
+                }
 			}else{
 				$result[$value['t_name']][] = $value['u_name'];
 				$count ++;

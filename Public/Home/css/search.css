@@ -64,6 +64,9 @@
 	height: 50px;
 	width: 13%;
 }
+td.absent{
+	color:red;
+}
 .week-table .null-td,.week-table .time-td{
 	width: 8%;
 }

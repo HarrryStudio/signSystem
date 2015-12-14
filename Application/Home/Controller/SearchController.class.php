@@ -16,6 +16,8 @@ class SearchController extends BaseController {
             $should_in = D('Course')->get_should_be();
             $team_info = M('team_info')->field('name')->select();
             $absent_count = 0;
+            //var_dump($should_in);
+            //var_dump($now_in);
             foreach ($team_info  as $key => $value) {
                 $t_name = $value['name'];
                 $item_in = [];
