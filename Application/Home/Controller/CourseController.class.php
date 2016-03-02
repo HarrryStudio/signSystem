@@ -76,7 +76,7 @@ class CourseController extends BaseController {
 
     public function to_excel(){
         $Course = D('course');
-        $this_week = I('this_week',$this->get_this_week());
+        $this_week = I('this_week',$Course->get_this_week());
         $team = (int)I('team');
         if($team > 0){
             $team_info = M()->table('team_info')->where(array('id' => $team))->field('name')->find();

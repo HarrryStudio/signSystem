@@ -139,7 +139,7 @@ class CourseModel extends BaseModel{
 
 	public function get_this_week(){
 		$start_time = strtotime( C('START_TIME') );
-		$num = (int)((time() - $start_time) / (3600 * 24 * 7));
+		$num = ceil((time() - $start_time) / (3600 * 24 * 7));
 		return $num;
 	}
 
