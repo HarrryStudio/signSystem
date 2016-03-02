@@ -38,7 +38,13 @@
 }
 #query-button span{
 	display: block;
-	visibility: bottom
+	vertical-align: bottom
+}
+#query-box{
+	position: relative;
+	width: 80px;
+	height: 30px;
+	margin-bottom: 10px;
 }
 #query-div{
 	position: absolute;
@@ -52,15 +58,23 @@
     border-radius: 6px;
     -webkit-box-shadow: 0 2px 5px rgba(0,0,0,.2);
     box-shadow: 0 2px 5px rgba(0,0,0,.2);
-    display: none;
+    /*display: none;*/
 }
-#query-div .arrow,#query-div .arrow::after{
+#query-div .arrow{
 	position: absolute;
     display: block;
     width: 0;
     height: 0;
     border-color: transparent;
     border-style: solid;
+}
+#query-div .arrow::after{
+		position: absolute;
+	    display: block;
+	    width: 0;
+	    height: 0;
+	    border-color: transparent;
+	    border-style: solid;
 }
    
 #query-div .arrow{
@@ -85,6 +99,7 @@
 #query-div a{
 	display: block;
 	color: #666;
+	text-align: center;
 }
 #query-button{
 	position: relative;

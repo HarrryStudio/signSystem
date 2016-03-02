@@ -1,7 +1,7 @@
 $(function(){
 	$("#offset-button").on("click",function(){
 		$.post($('#had-sign-in').val(),{name:$('#name-sign').val()},function(data){
-			console.log(data);
+			//console.log(data);
 			if(data.status == 0){
 				if(data.info == 1) initTime(0);
 				else initTime(data.data);
@@ -24,11 +24,11 @@ $(function(){
 			return false;
 		}
 	})
-	$('#query-button').on('mouseover',function(){
-		$('#query-div').show();
-	}).on('mouseout',function(){
-		$('#query-div').hide();
-	})
+	// $('#query-button').on('mouseover',function(){
+	// 	$('#query-div').show();
+	// }).on('mouseout',function(){
+	// 	$('#query-div').hide();
+	// })
 })
 window.onload = function(){
 	scrolltoend();

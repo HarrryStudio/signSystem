@@ -39,7 +39,7 @@ class CourseController extends BaseController {
 
     public function edit(){
     	$user_id = session('user_id');
-        $Course = D('course');
+    	$Course = D('course');
     	$this_week = I('this_week',$Course->get_this_week());
     	if(empty($user_id)){
     		$this->redirect('index');

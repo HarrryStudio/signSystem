@@ -19,19 +19,15 @@ $(function(){
 		})
 	})
 
-	$('select').on('change',function(){
-		if(parseInt($('#choose-week-select').val()) == 0){
-			var week = ""; 
+	$('select').on('change',change_par);
+	$('.turn-course').on('click',function(){
+		if(parseInt($(this).attr('value')) > 0){
+			$(this).attr('value',0);
 		}else{
-			var week = "?this_week=" + $('#choose-week-select').val(); 
+			$(this).attr('value',1);
 		}
-		if(parseInt($('#choose-team-select').val()) == 0){
-			var team = ""; 
-		}else{
-			var team = "&team=" + $('#choose-team-select').val(); 
-		}
-		window.location.href = $('#this-url').val() + week +team;
-	})
+		change_par();
+	});
 
 	$(document).on("keypress",function(e){
 		e = (e) ? e : ((window.event) ? window.event : "") //兼容IE和Firefox获得keyBoardEvent对象  
@@ -45,4 +41,23 @@ $(function(){
 			return false
 		}
 	})
+
+	function change_par(){
+		if(parseInt($('#choose-week-select').val()) == 0){
+			var week = ""; 
+		}else{
+			var week = "?this_week=" + $('#choose-week-select').val(); 
+		}
+		if(parseInt($('#choose-team-select').val()) == 0){
+			var team = ""; 
+		}else{
+			var team = "&team=" + $('#choose-team-select').val(); 
+		}
+		if(parseInt($('.turn-course').attr('value')) == 0){
+			var dif = "&dif=1"; 
+		}else{
+			var dif = "";
+		}
+		window.location.href = $('#this-url').val() + week + team + dif;
+	}
 })

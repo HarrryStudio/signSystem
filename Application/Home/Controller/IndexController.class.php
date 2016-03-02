@@ -4,8 +4,8 @@ use Think\Controller;
 class IndexController extends BaseController {
     public function index(){
     	$log_info = D('Log')->get_tobay_log_info();
-             $user_info = M()->table('user_info')->field('name')->select();
-             $this->assign("user_info",$user_info);
+        $user_info = M()->table('user_info')->field('name')->where(array('status' => 0))->select();
+        $this->assign("user_info",$user_info);
     	$this->assign("log_info",$log_info);
     	$this->display();
     }

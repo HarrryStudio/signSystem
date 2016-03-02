@@ -20,9 +20,9 @@ $(function(){
 	$(".course-td").click(function() {
 		var index = $(this).attr('index');
 		$('#chosed-course-index').val(index);
-		console.log(course_data);
-		console.log(index);
-		console.log(course_data[index]);
+		// console.log(course_data);
+		// console.log(index);
+		// console.log(course_data[index]);
 		var this_course = course_data[index];
 		if(typeof this_course == 'undefined' || this_course == ''){
 			$('.week-td').addClass('chosed-week');
@@ -62,7 +62,7 @@ $(function(){
 				weeks:arr
 			};
 		}
-		console.log(course_data);
+		// console.log(course_data);
 		$.post($('#save-change-url').val(),{data:course_data},function(data){
 			if(data.status == 0){
 				alert(data.info);

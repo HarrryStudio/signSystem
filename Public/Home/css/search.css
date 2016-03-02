@@ -8,7 +8,7 @@
 	float: right;
 }
 .bark{
-	
+
 }
 .input-group{
 	width: 300px;
@@ -60,12 +60,12 @@
 .now-team-col{
 	width: 120px
 }
+td.absent{
+	color:red;
+}
 .week-table td{
 	height: 50px;
 	width: 13%;
-}
-td.absent{
-	color:red;
 }
 .week-table .null-td,.week-table .time-td{
 	width: 8%;
@@ -84,7 +84,7 @@ td.absent{
 	position: relative;
 	overflow: hidden;
 	/*height: 330px;
-	
+
 	overflow-y:auto;*/
 }
 .day-td{
@@ -109,11 +109,11 @@ td.absent{
 }*/
 .week-days-tr th{
 	height: 20px;
-	font-size: 12px	
+	font-size: 12px
 }
 .week-dates-tr th{
 	height: 40px;
-	font-size: 14px	
+	font-size: 14px
 }
 /*.week-table tr td:first-child,.week-table tr th:first-child{
 	width: 30px;
@@ -172,7 +172,7 @@ td.absent{
 	border-left:10px red solid;
 }
 #in-arrow span{
-	margin-top: -15px 
+	margin-top: -15px
 }
 #out-arrow span{
 	margin-top: 0px
@@ -181,7 +181,7 @@ td.absent{
 	display: block;
 	white-space: nowrap;
 	font-size: 12px;
-	margin-right: 10px; 
+	margin-right: 10px;
 	width: 45px;
 	background-color: #fff;
 }

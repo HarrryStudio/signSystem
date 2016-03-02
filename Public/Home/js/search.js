@@ -160,9 +160,9 @@ function paint_color(){
 			if(typeof(team[key]) == "undefined"){
 				team[key] = color_arr[i ++];
 			}
-			console.log(key);
-			console.log($(this));
-			console.log("notice"+ team[key]);
+			// console.log(key);
+			// console.log($(this));
+			// console.log("notice"+ team[key]);
 			$(this).css({'color': team[key]});
 			//$(this).css({"color":color_arr[i ++]});
 		})

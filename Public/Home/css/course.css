@@ -1,7 +1,14 @@
 h3{
 	float: left;
 	width: auto;
-	margin: 0
+	margin: 0;
+	margin-bottom: 10px;
+}
+.button-bar{
+	float: right;
+	margin-right: 20px;
+	margin-bottom: 10px;
+	/*width: 300px;*/
 }
 #course-edit{
 	float: right;
@@ -47,3 +54,8 @@ select{
 option{
 	font-size: 14px;
 }
+.turn-course{
+	float: right;
+	margin-right: 10px
+}
+
