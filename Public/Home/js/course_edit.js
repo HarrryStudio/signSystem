@@ -63,6 +63,7 @@ $(function(){
 			};
 		}
 		console.log(course_data);
+		return;
 		$.post($('#save-change-url').val(),{data:course_data},function(data){
 			if(data.status == 0){
 				alert(data.info);

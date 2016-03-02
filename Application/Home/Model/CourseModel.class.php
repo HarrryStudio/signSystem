@@ -24,7 +24,7 @@ class CourseModel extends BaseModel{
 				->join('user_info on user_id = user_info.id')
 				->where($where)
 				->select();
-				// echo $this->getLastSql();
+				echo $this->getLastSql();
 		$have_data = array();
 		$have_data = array_pad($have_data , 35 ,array());
         $dif_data = array();
@@ -106,8 +106,8 @@ class CourseModel extends BaseModel{
     		$this->error = "查无此人";
     		return false;
     	}
-
-    	$data = I('data');
+        $data = I('data');
+        var_dump($data);
 		$data = json_encode($data);
 		$r_data['update_time'] = time();
     	$r_data['data'] = $data;
